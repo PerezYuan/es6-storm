@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>es6-rest-spread</title>
+</head>
+<body>
+    <script>
+        // rest的意思就是把剩下的归并到一起, 不能放到arg的中间，只能在最后
+        function rest(a, ...b) {
+            console.log(a); // 1
+            console.log(b); // [2, 3, 4]
+        }
+        
+        rest(1, 2, 3, 4);
+
+        // spread就是逆运算，用于打开数组，可以代替apply
+        Math.max.apply(null, [1, 2, 3, 4]); // 4
+        Math.max(...[1, 2, 3, 4]);
+
+        // 解耦赋值 Destructuring
+        let [a, b, c] = [...[1, 2, 3]];
+        let [first,...last]=[1, 2, 3, 4, 5];
+        console.log(a); // 1
+        console.log(b); // 2
+        console.log(c); // 3
+        console.log(first); // 1
+        console.log(last); // [2, 3, 4, 5]
+
+        // cacat
+        let arr = [1, 2, 3];
+        console.log(arr.concat([4]));
+        console.log([...arr, 4]);
+    </script>
+</body>
+</html>

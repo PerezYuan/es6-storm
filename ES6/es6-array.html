@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>es6-array</title>
+</head>
+
+<body>
+<script>
+    // 将类数组或可遍历对象转为数组
+    console.log(Array.from('aasd')); // ['a', 'a', 's', 'd']
+    console.log(Array.from({0:'a', 1:'b', 2:'c', length: 3})); // ['a', 'b', 'c']
+    console.log(Array.from(new Set([1,1,2]))); // [1, 2]
+
+    // copyWithin(target, start, end) 第三个参数不传默认为长度，从第2的个索引位置开始扩展0位置的元素
+    // ['a', 'b', 'a', 'b']
+    console.log(['a', 'b', 'c', 'd'].copyWithin(2, 0));
+    // ['a', 'b', 'b', 'c']
+    console.log(['a', 'b', 'c', 'd'].copyWithin(2, 1));
+    // ['a', 'b', 'b', 'd'] 取出索引为1，2的元素，但是不包含2的元素，故只有['b'],被扩展到c的位置
+    console.log(['a', 'b', 'c', 'd'].copyWithin(2, 1, 2));
+    // {0: 1, 3: 1, length: 5} 可以看作类数组 [0:undefined, 1:undefined, 2:undefined, 3:1, 4:undefined, 5:undefined]
+    [].copyWithin.call({length: 5, 3: 1}, 0, 3);
+
+    // 注意Array.of和Array的区别
+    console.log(Array.of(1, 2, 3)); // [1, 2, 3]
+    console.log(Array(1, 2, 3)); // [1, 2, 3]
+    console.log(Array.of(3)); // [3]
+    console.log(Array(3)); // [undefined, undefined, undefined]
+
+    // 填充方法fill(value, start, end)
+    console.log(Array(5).fill(4)); // [4,4,4,4,4]
+    console.log(['a','a','a','a','a','a'].fill(4, 0, 2)); // [4,4,'a','a','a','a']
+</script>
+</body>
+</html>

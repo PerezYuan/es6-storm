@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>for-of</title>
+</head>
+<body>
+    <script>
+    	let arr = new Array(10).fill().map((_, i) => i + 1);
+    	document.write('for-in:<br>');
+        for (var propName in arr) {
+            document.write(propName + '<br>');
+        }
+        document.write('<br>');
+        document.write('for-of:<br>');
+        for (var propName of arr) {
+            document.write(propName + '<br>');
+        }
+    </script>
+</body>
+</html>
