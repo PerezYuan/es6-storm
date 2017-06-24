@@ -33,6 +33,14 @@
         let arr = [1, 2, 3];
         console.log(arr.concat([4]));
         console.log([...arr, 4]);
+
+        // 对象解耦
+        var obj = {
+            add({a, b}) {
+                return a + b;
+            }
+        }
+        obj.add({a : 1, b: 2});
     </script>
 </body>
 </html>
