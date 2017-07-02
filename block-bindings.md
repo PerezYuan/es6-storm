@@ -109,7 +109,93 @@ if (condition) {
 }
 ```
 
-这里的`let`声明不会抛出错误，因为在`if`语句中产生了一个新的叫做`count`的变量，而不是在包围它的块中创建了`count`。在`if`块中，新的变量在全局`count`之下，除非子块被执行，否则不会被访问到
+这里的`let`声明不会抛出错误，因为在`if`语句中产生了一个新的叫做`count`的变量，而不是在包围它的块中创建了`count`。在`if`块中，新的变量在全局`count`之下，除非子块被执行，否则不会被访问到。
+
+### Constant Declarations（常亮声明）
+
+在ES6中，你也可以使用`const`声明语法来定义一个变量。变量采用`const`定义会被认为是常量，意味着他们的值一旦被设置就不能被改变。以为这个原因，每个`const`变量必须在声明的时候初始化，如下例子：
+
+```js
+// Valid constant
+const maxItems = 30;
+
+// Syntax error: missing initialization
+const name;
+```
+
+这里`maxItems`变量被初始化了，所以它的`const`声明工作起来没有任何问题。但是如果你尝试执行上述代码得程序，`name`变量会引起语法错误，因为`name`没有被初始化。
+
+- Constant vs Let Declarations
+
+常量和`let`声明一样，是块级的声明。这就意味着一旦执行流执行到常量声明的块之外，常量就无法被访问到了，而且声明并没有被提升，就像例子演示的一样：
+
+```js
+if (condition) {
+    const maxItems = 5;
+
+    // more code
+}
+
+// maxItems isn't accessible here
+```
+
+在这个代码中，常量`maxItems`是在`if`语句中被定义的。一旦这个语句执行完毕，`maxItems`在这个块之外就无法被访问到了。
+
+另外一个和`let`相似的地方就是，在同一个作用域中使用`const`声明一个已经定义好的变量也会抛出一个错误。这不会有任何影响无论变量是用`var`（全局作用域和函数作用域）或者`let`（块级作用域）声明的，考虑如下例子的代码：
+
+```js
+var message = "Hello!";
+let age = 25;
+
+// Each of these would throw an error.
+const message = "Goodbye!";
+const age = 30;
+```
+
+单独来看，两个`const`什么都是有效的，但是这个例子在之前有`var`和`let`的声明，它们都不会像想象的一样执行。
+
+不管上述类似的地方，在`let`和`const`之间存在一个需要记住的很大的差别。当你尝试给一个之前定义过的常量赋值的时候会抛出一个错误，无论是在严格模式还是非严格模式之下：
+
+```js
+const maxItems = 5;
+
+maxItems = 6;      // throws error
+```
+
+跟其他语言中的常量一样的是，`maxItems`变量在之后不能被赋予一个新的值。但是，和其他语言中常量不一样的地方是，一个常量的值也许会被改变如果他是一个object。
+
+- Declaring Objects with Const
+
+`const`声明阻止的改变是**binding**（引用）不是**value**本身，这就意味着`const`对对象的声明不能阻止对象的改变。如下例子：
+
+```js
+const person = {
+    name: "Nicholas"
+};
+
+// works
+person.name = "Greg";
+
+// throws an error
+person = {
+    name: "Greg"
+};
+```
+
+这里，`person`的绑定被创建，通过一个对象含有一个属性并且初始化。这里修改`person.name`是不会引起错误的，因为这次改变改变的是`person`内部的属性，而不是`person`自身绑定的值。当代码尝试给`person`赋值时（尝试改变绑定），就会引起错误。这里`const`机制的设计可能不是那么容易理解，只需要记住：`const`会阻止绑定关系的改变，而不是绑定值的改变。
+
+### The Temporal Dead Zone（暂时性死区）
+
+一个被`let`或者`const`声明的变量是无法被访问到的除非在他们的声明之后。如果尝试这样做会导致reference error，即使是使用`typeof`这种安全的操作符：
+
+```js
+if (condition) {
+    console.log(typeof value);  // ReferenceError!
+    let value = "blue";
+}
+```
+
+这里，变量`value`被`let`定义和初始化的
 
 ## Block Binding in Loops
 
