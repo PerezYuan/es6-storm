@@ -77,6 +77,44 @@ console.log(typeof PersonClass.prototype.sayName);  // "function"
 5. 不使用`new`调用类的构造器会抛出错误。
 6. 尝试在类方法里面重写类的名字会抛出错误。
 
+考虑到以上所有的因素，之前`PersonClass`声明完全等同于以下不使用类语法代码：
+
+```js
+// direct equivalent of PersonClass
+let PersonType2 = (function() {
+
+    "use strict";
+
+    const PersonType2 = function(name) {
+
+        // make sure the function was called with new
+        if (typeof new.target === "undefined") {
+            throw new Error("Constructor must be called with new.");
+        }
+
+        this.name = name;
+    }
+
+    Object.defineProperty(PersonType2.prototype, "sayName", {
+        value: function() {
+
+            // make sure the method wasn't called with new
+            if (typeof new.target !== "undefined") {
+                throw new Error("Method cannot be called with new.");
+            }
+
+            console.log(this.name);
+        },
+        enumerable: false,
+        writable: true,
+        configurable: true
+    });
+
+    return PersonType2;
+}());
+```
+
+
 ## Class Expressions
 ## Classes as First-Class Citizens
 ## Accessor Properties
